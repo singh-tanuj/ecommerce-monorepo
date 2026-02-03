@@ -1,0 +1,7 @@
+﻿EPIC-CHECKOUT-PRICING:
+  description: Pricing, promotions, tax, shipping correctness
+  capabilities: [pricing_engine, promotions_engine, tax_engine, shipping_engine]
+
+EPIC-PAYMENT-RELIABILITY:
+  description: Idempotent, retry-safe checkout & payment
+  capabilities: [checkout_idempotency, payment_retry, order_state_consistency, refunds]
