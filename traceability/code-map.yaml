@@ -1,0 +1,3 @@
+﻿pricing_engine:
+  services:
+    - services/pricing/src/PricingEngine.java

@@ -1,0 +1,5 @@
+﻿# Add Jira story keys here (e.g., SCRUM-8)
+SCRUM-8:
+  epic: EPIC-CHECKOUT-PRICING
+  title: Fix checkout total calculation after discount
+  capabilities: [discount_allocation, tax_base_policy, rounding_policy]
