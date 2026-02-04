@@ -1,80 +1,37 @@
-// services/checkout/src/CheckoutOrchestrator.java
+Checkout total mismatch when applying discount code
 
-import java.util.Objects;
+Problem:
+Checkout "Order Total" is incorrect when a discount code is applied. Subtotal updates, but total does not reflect the discount + tax correctly.
 
-/**
- * CheckoutOrchestrator coordinates dependent services:
- * - Cart totals
- * - Pricing (discount/tax/shipping)
- * - Payment processing
- * - Order state updates
- *
- * This is where cross-service impact becomes obvious for Agent 2.
- */
-public class CheckoutOrchestrator {
+Steps to Reproduce:
 
-    private final CartPort cartPort;
-    private final PricingPort pricingPort;
-    private final CheckoutService checkoutService;
+1. Add 2 items to cart (any SKUs)
 
-    public CheckoutOrchestrator(CartPort cartPort, PricingPort pricingPort, CheckoutService checkoutService) {
-        this.cartPort = Objects.requireNonNull(cartPort, "cartPort must not be null");
-        this.pricingPort = Objects.requireNonNull(pricingPort, "pricingPort must not be null");
-        this.checkoutService = Objects.requireNonNull(checkoutService, "checkoutService must not be null");
-    }
+2. Go to Checkout
 
-    public CheckoutFacade.CheckoutReceipt placeOrder(String cartId, String userId) {
-        // Pull cart subtotal from cart domain
-        long subtotalCents = cartPort.getSubtotalCents(cartId);
+3. Apply discount code: SAVE10
 
-        // Pricing step: apply discount/tax/shipping (kept simple and deterministic)
-        PricingPort.PricingBreakdown breakdown = pricingPort.calculateTotals(subtotalCents, userId);
+4. Observe Order Total
 
-        // Delegate to CheckoutService for payment + order state changes
-        CheckoutService.CheckoutResult result = checkoutService.checkout(
-                cartId,
-                userId,
-                breakdown.getTotalCents()
-        );
+Expected:
+Order Total = (Subtotal - Discount) + Tax + Shipping (if applicable)
+All line items should be consistent.
 
-        return new CheckoutFacade.CheckoutReceipt(
-                result.getOrderId(),
-                result.getPaymentId(),
-                breakdown.getTotalCents()
-        );
-    }
+Actual:
+Order Total sometimes remains equal to the pre-discount total, or tax is calculated from the wrong base.
 
-    // ---- Ports (interfaces) so this monorepo stays modular & testable ----
+Environment:
 
-    public interface CartPort {
-        long getSubtotalCents(String cartId);
-    }
+Env: QA / Staging
 
-    public interface PricingPort {
-        PricingBreakdown calculateTotals(long subtotalCents, String userId);
+Browser: Chrome latest
 
-        class PricingBreakdown {
-            private final long subtotalCents;
-            private final long discountCents;
-            private final long taxCents;
-            private final long shippingCents;
+Build: current main branch
 
-            public PricingBreakdown(long subtotalCents, long discountCents, long taxCents, long shippingCents) {
-                this.subtotalCents = subtotalCents;
-                this.discountCents = discountCents;
-                this.taxCents = taxCents;
-                this.shippingCents = shippingCents;
-            }
+Notes:
+This is a clean test ticket for validating Agent 1/2/3 wiring (Jira -> PR -> analysis).
 
-            public long getSubtotalCents() { return subtotalCents; }
-            public long getDiscountCents() { return discountCents; }
-            public long getTaxCents() { return taxCents; }
-            public long getShippingCents() { return shippingCents; }
+Subtasks
 
-            public long getTotalCents() {
-                long discounted = Math.max(0, subtotalCents - discountCents);
-                return discounted + taxCents + shippingCents;
-            }
-        }
-    }
-}
+Add subtask
+
