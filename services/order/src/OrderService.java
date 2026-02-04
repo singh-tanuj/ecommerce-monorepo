@@ -44,12 +44,42 @@ public class OrderService {
         o.status = stateMachine.markPaid(o.status);
     }
 
-    public void markPaymentFailed(String orderId, String reason) {
-        requireNonBlank(reason, "reason must not be blank");
-        Order o = get(orderId);
+   public void markPaymentSucceeded(String orderId, String paymentId) {
+    requireNonBlank(paymentId, "paymentId must not be blank");
+    Order o = get(orderId);
 
-        o.failureReason = reason;
-        o.status = stateMachine.markPaymentFailed(o.status);
+    // Idempotency: same success callback twice should not break state
+    if (o.paymentId != null) {
+        if (o.paymentId.equals(paymentId)) {
+            // already processed this payment success
+            return;
+        }
+        // different payment id for same order => suspicious / double-charge risk
+        throw new IllegalStateException("Payment already set for order " + orderId + ": " + o.paymentId);
+    }
+
+    o.paymentId = paymentId;
+    o.status = stateMachine.markPaid(o.status);
+}
+
+public void markPaymentFailed(String orderId, String reason) {
+    requireNonBlank(reason, "reason must not be blank");
+    Order o = get(orderId);
+
+    // If already paid, do not allow failure to overwrite success
+    if (o.paymentId != null) {
+        throw new IllegalStateException("Cannot mark payment failed after payment succeeded for order " + orderId);
+    }
+
+    // Idempotency for failure: if same reason is repeated, no-op
+    if (o.failureReason != null && o.failureReason.equals(reason)) {
+        return;
+    }
+
+    o.failureReason = reason;
+    o.status = stateMachine.markPaymentFailed(o.status);
+}
+
     }
 
     public Order getOrder(String orderId) {
@@ -105,3 +135,4 @@ public class OrderService {
         }
     }
 }
+
