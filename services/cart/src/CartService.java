@@ -26,6 +26,7 @@ public class CartService {
 
         Cart cart = getOrCreateCart(cartId);
         cart.addOrIncrement(item.getSku(), item.getQuantity(), item.getUnitPriceCents());
+        cart.reallocateDiscounts(); 
         return cart;
     }
 
@@ -34,6 +35,7 @@ public class CartService {
 
         Cart cart = getOrCreateCart(cartId);
         cart.setQuantity(sku, newQuantity);
+        cart.reallocateDiscounts();
         return cart;
     }
 
@@ -42,6 +44,7 @@ public class CartService {
 
         Cart cart = getOrCreateCart(cartId);
         cart.remove(sku);
+        cart.reallocateDiscounts();
         return cart;
     }
 
@@ -61,6 +64,7 @@ public class CartService {
     public static class Cart {
         private final String cartId;
         private final Map<String, LineItem> items = new LinkedHashMap<>();
+         private long orderDiscountCents;
 
         public Cart(String cartId) {
             this.cartId = cartId;
@@ -108,6 +112,7 @@ public class CartService {
         private final String sku;
         private int quantity;
         private long unitPriceCents;
+        private long allocatedDiscountCents;
 
         public LineItem(String sku, int quantity, long unitPriceCents) {
             this.sku = sku;
@@ -126,3 +131,4 @@ public class CartService {
         }
     }
 }
+
