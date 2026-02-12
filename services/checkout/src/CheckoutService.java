@@ -1,10 +1,28 @@
+package services.checkout.src;
+
+import services.pricing.src.PricingEngine;
+import services.payment.src.PaymentService;
+
 public class CheckoutService {
-    public void checkout(String orderId) {
-        try {
-            paymentService.processPayment(request);
-        } catch (PaymentFailedException e) {
-            orderService.markPaymentFailed(orderId);
-            throw new CheckoutException("Payment failed after retries");
-        }
+
+    private final PricingEngine pricingEngine;
+    private final PaymentService paymentService;
+
+    public CheckoutService(PricingEngine pricingEngine,
+                           PaymentService paymentService) {
+        this.pricingEngine = pricingEngine;
+        this.paymentService = paymentService;
+    }
+
+    public String checkout(String region,
+                           double subtotal,
+                           String coupon,
+                           String paymentMethod) {
+
+        double total = pricingEngine.calculateFinalTotal(region, subtotal, coupon);
+
+        paymentService.processPayment(total, paymentMethod);
+
+        return "ORDER_CONFIRMED";
     }
 }
