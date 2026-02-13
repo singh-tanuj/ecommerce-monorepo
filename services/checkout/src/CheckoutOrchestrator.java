@@ -1,37 +1,84 @@
-Checkout total mismatch when applying discount code
+package services.checkout.src;
 
-Problem:
-Checkout "Order Total" is incorrect when a discount code is applied. Subtotal updates, but total does not reflect the discount + tax correctly.
+import java.util.Objects;
 
-Steps to Reproduce:
+public class CheckoutOrchestrator {
 
-1. Add 2 items to cart (any SKUs)
+    private final CartPort cartPort;
+    private final CheckoutService checkoutService;
+    private final ShippingPort shippingPort;
 
-2. Go to Checkout
+    public CheckoutOrchestrator(
+            CartPort cartPort,
+            CheckoutService checkoutService,
+            ShippingPort shippingPort
+    ) {
+        this.cartPort = Objects.requireNonNull(cartPort, "cartPort must not be null");
+        this.checkoutService = Objects.requireNonNull(checkoutService, "checkoutService must not be null");
+        this.shippingPort = Objects.requireNonNull(shippingPort, "shippingPort must not be null");
+    }
 
-3. Apply discount code: SAVE10
+    public CheckoutReceipt placeOrder(
+            String cartId,
+            String userId,
+            String regionCode,
+            double discount
+    ) {
 
-4. Observe Order Total
+        // 1️⃣ Fetch subtotal from cart domain
+        double subtotal = cartPort.getSubtotal(cartId);
 
-Expected:
-Order Total = (Subtotal - Discount) + Tax + Shipping (if applicable)
-All line items should be consistent.
+        // 2️⃣ Calculate shipping
+        double shipping = shippingPort.calculateShipping(subtotal);
 
-Actual:
-Order Total sometimes remains equal to the pre-discount total, or tax is calculated from the wrong base.
+        // 3️⃣ Compute final total using multi-jurisdiction tax logic
+        double finalTotal = checkoutService.computeFinalTotal(
+                regionCode,
+                subtotal,
+                discount,
+                shipping
+        );
 
-Environment:
+        return new CheckoutReceipt(
+                cartId,
+                userId,
+                finalTotal
+        );
+    }
 
-Env: QA / Staging
+    // -----------------------
+    // PORT DEFINITIONS
+    // -----------------------
 
-Browser: Chrome latest
+    public interface CartPort {
+        double getSubtotal(String cartId);
+    }
 
-Build: current main branch
+    public interface ShippingPort {
+        double calculateShipping(double subtotal);
+    }
 
-Notes:
-This is a clean test ticket for validating Agent 1/2/3 wiring (Jira -> PR -> analysis).
+    public static class CheckoutReceipt {
+        private final String cartId;
+        private final String userId;
+        private final double totalAmount;
 
-Subtasks
+        public CheckoutReceipt(String cartId, String userId, double totalAmount) {
+            this.cartId = cartId;
+            this.userId = userId;
+            this.totalAmount = totalAmount;
+        }
 
-Add subtask
+        public double getTotalAmount() {
+            return totalAmount;
+        }
 
+        public String getCartId() {
+            return cartId;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+    }
+}
