@@ -13,7 +13,7 @@ public class CartValidator {
 
     public void validateUpdateQuantity(String sku, int newQuantity) {
         requireNonBlank(sku, "sku must not be blank");
-        if (newQuantity < 0) {
+        if (newQuantity <= 0) {
             throw new ValidationException("newQuantity must be > 0");
         }
     }
@@ -63,4 +63,5 @@ public class CartValidator {
         public long getUnitPriceCents() { return unitPriceCents; }
     }
 }
+
 
