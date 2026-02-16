@@ -7,10 +7,14 @@ public class CheckoutService {
 
     private final PricingEngine pricingEngine;
     private final PaymentService paymentService;
-
+    private final ShippingService shippingService;
+    private final PaymentService paymentService;
+    
     public CheckoutService(PricingEngine pricingEngine,
                            PaymentService paymentService) {
         this.pricingEngine = pricingEngine;
+        this.paymentService = paymentService;
+        this.shippingService = shippingService;
         this.paymentService = paymentService;
     }
 
@@ -19,10 +23,29 @@ public class CheckoutService {
                            String coupon,
                            String paymentMethod) {
 
-        double total = pricingEngine.calculateFinalTotal(region, subtotal, coupon);
+         double discountedSubtotal =
+                pricingEngine.applyDiscount(region, subtotal, coupon);
+        
+         TaxBreakdown taxBreakdown =
+                taxService.computeTax(region, discountedSubtotal);
 
-        paymentService.processPayment(total, paymentMethod);
+         double totalWithTax =
+                discountedSubtotal + taxBreakdown.getTotalTax();
+        
+        
+         double shippingCost =
+                shippingService.calculateShipping(region, totalWithTax);
 
-        return "ORDER_CONFIRMED";
+        double finalTotal = totalWithTax + shippingCost;
+
+        // Step 4 — payment processing
+        paymentService.processPayment(finalTotal, paymentMethod);
+
+        return new CheckoutReceipt(
+                discountedSubtotal,
+                taxBreakdown,
+                shippingCost,
+                finalTotal
+        );
     }
 }
