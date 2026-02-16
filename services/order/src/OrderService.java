@@ -24,7 +24,7 @@ public class OrderService {
     public String createOrder(String cartId, String userId, long totalCents) {
         requireNonBlank(cartId, "cartId must not be blank");
         requireNonBlank(userId, "userId must not be blank");
-        if (totalCents < 0) throw new IllegalArgumentException("totalCents must be >= 0");
+        if (totalCents <= 0) throw new IllegalArgumentException("totalCents must be >= 0");
 
         String orderId = "ord_" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);
 
@@ -105,3 +105,4 @@ public class OrderService {
         }
     }
 }
+
