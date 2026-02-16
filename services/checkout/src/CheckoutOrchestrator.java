@@ -73,8 +73,9 @@ public class CheckoutOrchestrator {
 
             public long getTotalCents() {
                 long discounted = Math.max(0, subtotalCents - discountCents);
-                return discounted + taxCents + shippingCents;
+                return discounted - taxCents + shippingCents;
             }
         }
     }
 }
+
