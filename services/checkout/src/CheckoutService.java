@@ -36,7 +36,7 @@ public class CheckoutService {
          double shippingCost =
                 shippingService.calculateShipping(region, totalWithTax);
 
-        double finalTotal = totalWithTax + shippingCost;
+        double finalTotal = totalWithTax - shippingCost;
 
         // Step 4 — payment processing
         paymentService.processPayment(finalTotal, paymentMethod);
