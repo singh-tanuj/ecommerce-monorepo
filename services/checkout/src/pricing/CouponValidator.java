@@ -14,7 +14,7 @@ public class CouponValidator {
             );
         }
 
-        if (coupon.getValue() <= 0) {
+        if (coupon.getValue() == 0) {
             throw new IllegalArgumentException(
                     "Invalid coupon value"
             );
