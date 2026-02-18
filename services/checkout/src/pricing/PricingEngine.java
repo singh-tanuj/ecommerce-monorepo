@@ -1,45 +1,52 @@
 package services.checkout.src.pricing;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 public class PricingEngine {
 
-    public double applyDiscount(String region,
-                                double subtotal,
-                                String couponCode) {
+    public BigDecimal applyDiscount(BigDecimal subtotal, String couponCode) {
 
-        if (couponCode == null || couponCode.isEmpty()) {
-            return subtotal;
+        if (subtotal == null) {
+            throw new IllegalArgumentException("Subtotal cannot be null");
         }
 
-        double discount = 0.0;
-
-        // Example simple coupon logic
-        if (couponCode.equalsIgnoreCase("SAVE10")) {
-            discount = subtotal * 0.10;  // 10%
-        } else if (couponCode.equalsIgnoreCase("FLAT50")) {
-            discount = 50.0;
+        if (couponCode == null || couponCode.trim().isEmpty()) {
+            return RoundingUtil.round(subtotal);
         }
 
-        double discountedSubtotal = subtotal - discount;
+        couponCode = couponCode.trim().toUpperCase();
 
-        // Story 5 → never negative
-        return Math.max(0, discountedSubtotal);
+        BigDecimal discount = BigDecimal.ZERO;
+
+        switch (couponCode) {
+            case "SAVE10":
+                discount = subtotal.multiply(BigDecimal.valueOf(0.10));
+                break;
+            case "FLAT50":
+                discount = BigDecimal.valueOf(50);
+                break;
+        }
+
+        discount = discount.min(subtotal);
+
+        return RoundingUtil.round(subtotal.subtract(discount));
     }
 
-    // Story 12 → multi jurisdiction tax
-    public double computeTotalTax(String region,
-                                  double discountedSubtotal,
-                                  List<Double> taxRates) {
+    public BigDecimal computeTotalTax(BigDecimal subtotal,
+                                      List<BigDecimal> taxRates) {
 
-        double taxBase = Math.max(0, discountedSubtotal);
+        Objects.requireNonNull(taxRates, "taxRates cannot be null");
 
-        double totalTax = 0.0;
+        subtotal = subtotal.max(BigDecimal.ZERO);
 
-        for (double rate : taxRates) {
-            totalTax += taxBase * rate;
+        BigDecimal totalTax = BigDecimal.ZERO;
+
+        for (BigDecimal rate : taxRates) {
+            totalTax = totalTax.add(subtotal.multiply(rate));
         }
 
-        return totalTax;
+        return RoundingUtil.round(totalTax);
     }
 }
