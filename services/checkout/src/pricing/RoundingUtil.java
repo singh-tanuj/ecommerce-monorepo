@@ -9,10 +9,7 @@ public class RoundingUtil {
 
     private RoundingUtil() {}
 
-    public static double round(double value) {
-        return BigDecimal
-                .valueOf(value)
-                .setScale(SCALE, RoundingMode.HALF_UP)
-                .doubleValue();
+    public static BigDecimal round(BigDecimal value) {
+        return value.setScale(SCALE, RoundingMode.HALF_UP);
     }
 }
