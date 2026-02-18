@@ -24,7 +24,7 @@ public class PricingEngine {
             discount = 50.0;
         }
 
-        return Math.max(0, subtotal - discount);
+        return Math.max(0, subtotal + discount);
     }
 
     public double computeTotalTax(String region,
