@@ -11,7 +11,7 @@ public class Coupon {
 
     private final String code;
     private final Type type;
-    private final double value;        // 10 means 10% if percentage
+    private final double value;
     private final double minSubtotal;
     private final Set<String> excludedSkus;
 
@@ -20,6 +20,14 @@ public class Coupon {
                   double value,
                   double minSubtotal,
                   Set<String> excludedSkus) {
+
+        if (code == null || code.isEmpty()) {
+            throw new IllegalArgumentException("Coupon code cannot be empty");
+        }
+
+        if (value < 0) {
+            throw new IllegalArgumentException("Coupon value cannot be negative");
+        }
 
         this.code = code;
         this.type = type;
@@ -52,8 +60,11 @@ public class Coupon {
         return subtotal >= minSubtotal;
     }
 
-    // 🔧 Improvement: Guard for excluded SKUs
     public boolean isSkuExcluded(String sku) {
         return excludedSkus != null && excludedSkus.contains(sku);
+    }
+
+    public boolean isPercentage() {
+        return this.type == Type.PERCENTAGE;
     }
 }
