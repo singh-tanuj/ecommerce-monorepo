@@ -10,13 +10,19 @@ public class CouponValidator {
 
         if (!coupon.isEligible(subtotal)) {
             throw new IllegalArgumentException(
-                "Coupon not eligible: minimum subtotal not met"
+                    "Coupon not eligible: minimum subtotal not met"
             );
         }
 
         if (coupon.getValue() <= 0) {
             throw new IllegalArgumentException(
-                "Invalid coupon value"
+                    "Invalid coupon value"
+            );
+        }
+
+        if (coupon.getCode() == null || coupon.getCode().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Coupon code cannot be empty"
             );
         }
     }
