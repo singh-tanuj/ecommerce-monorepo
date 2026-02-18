@@ -1,5 +1,8 @@
 package services.checkout.src.pricing;
 
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 public class Coupon {
@@ -11,49 +14,36 @@ public class Coupon {
 
     private final String code;
     private final Type type;
-    private final double value;        // 10 means 10% if percentage
-    private final double minSubtotal;
+    private final BigDecimal value;
+    private final BigDecimal minSubtotal;
     private final Set<String> excludedSkus;
 
     public Coupon(String code,
                   Type type,
-                  double value,
-                  double minSubtotal,
+                  BigDecimal value,
+                  BigDecimal minSubtotal,
                   Set<String> excludedSkus) {
 
-        this.code = code;
-        this.type = type;
-        this.value = value;
-        this.minSubtotal = minSubtotal;
-        this.excludedSkus = excludedSkus;
+        this.code = Objects.requireNonNull(code, "code must not be null");
+        this.type = Objects.requireNonNull(type, "type must not be null");
+        this.value = Objects.requireNonNull(value, "value must not be null");
+        this.minSubtotal = Objects.requireNonNull(minSubtotal, "minSubtotal must not be null");
+        this.excludedSkus = excludedSkus == null
+                ? Collections.emptySet()
+                : Collections.unmodifiableSet(excludedSkus);
     }
 
-    public String getCode() {
-        return code;
+    public String getCode() { return code; }
+    public Type getType() { return type; }
+    public BigDecimal getValue() { return value; }
+    public BigDecimal getMinSubtotal() { return minSubtotal; }
+    public Set<String> getExcludedSkus() { return excludedSkus; }
+
+    public boolean isEligible(BigDecimal subtotal) {
+        return subtotal.compareTo(minSubtotal) >= 0;
     }
 
-    public Type getType() {
-        return type;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public double getMinSubtotal() {
-        return minSubtotal;
-    }
-
-    public Set<String> getExcludedSkus() {
-        return excludedSkus;
-    }
-
-    public boolean isEligible(double subtotal) {
-        return subtotal >= minSubtotal;
-    }
-
-    // 🔧 Improvement: Guard for excluded SKUs
     public boolean isSkuExcluded(String sku) {
-        return excludedSkus != null && excludedSkus.contains(sku);
+        return excludedSkus.contains(sku);
     }
 }
