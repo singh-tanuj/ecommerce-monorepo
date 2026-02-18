@@ -10,9 +10,12 @@ public class RoundingUtil {
     private RoundingUtil() {}
 
     public static double round(double value) {
-        return BigDecimal
+
+        double rounded = BigDecimal
                 .valueOf(value)
                 .setScale(SCALE, RoundingMode.HALF_UP)
                 .doubleValue();
+
+        return rounded == -0.0 ? 0.0 : rounded;
     }
 }
