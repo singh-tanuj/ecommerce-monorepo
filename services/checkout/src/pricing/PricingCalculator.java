@@ -1,5 +1,7 @@
 package services.checkout.src.pricing;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 public class PricingCalculator {
@@ -7,15 +9,16 @@ public class PricingCalculator {
     private final TaxService taxService;
 
     public PricingCalculator(TaxService taxService) {
-        // 🔧 Improvement: Null safety
-        this.taxService =
-                Objects.requireNonNull(taxService, "taxService must not be null");
+        this.taxService = Objects.requireNonNull(taxService);
     }
 
-    /**
-     * Applies coupon discount (Story 3)
-     */
-    public double applyCoupon(double subtotal, Coupon coupon) {
+    public BigDecimal applyCoupon(BigDecimal subtotal, Coupon coupon) {
+
+        if (subtotal == null) {
+            throw new IllegalArgumentException("Subtotal cannot be null");
+        }
+
+        subtotal = subtotal.max(BigDecimal.ZERO);
 
         if (coupon == null) {
             return RoundingUtil.round(subtotal);
@@ -23,37 +26,37 @@ public class PricingCalculator {
 
         CouponValidator.validate(coupon, subtotal);
 
-        double discount;
+        BigDecimal discount;
 
-        // 🔧 Improvement: Percentage divided by 100
         if (coupon.getType() == Coupon.Type.PERCENTAGE) {
-            discount = subtotal * (coupon.getValue() / 100.0);
+            discount = subtotal.multiply(
+                    coupon.getValue().divide(BigDecimal.valueOf(100), 6, RoundingMode.HALF_UP));
         } else {
             discount = coupon.getValue();
         }
 
-        double discountedSubtotal = subtotal - discount;
+        // Prevent discount overflow
+        discount = discount.min(subtotal);
 
-        // Story 3: discounted subtotal must never go below zero
-        return RoundingUtil.round(Math.max(0, discountedSubtotal));
+        BigDecimal discountedSubtotal = subtotal.subtract(discount);
+
+        return RoundingUtil.round(discountedSubtotal.max(BigDecimal.ZERO));
     }
 
-    /**
-     * Computes tax (Story 5 + Story 12)
-     */
-    public double computeTax(String region, double discountedSubtotal) {
+    public BigDecimal computeTax(String region, BigDecimal discountedSubtotal) {
         return taxService.computeTotalTax(region, discountedSubtotal);
     }
 
-    /**
-     * Final total calculation
-     */
-    public double computeFinalTotal(double discountedSubtotal,
-                                    double totalTax,
-                                    double shippingCost) {
+    public BigDecimal computeFinalTotal(BigDecimal discountedSubtotal,
+                                        BigDecimal totalTax,
+                                        BigDecimal shippingCost) {
 
-        double finalTotal = discountedSubtotal + totalTax + shippingCost;
+        shippingCost = shippingCost == null ? BigDecimal.ZERO : shippingCost.max(BigDecimal.ZERO);
 
-        return RoundingUtil.round(Math.max(0, finalTotal));
+        BigDecimal finalTotal = discountedSubtotal
+                .add(totalTax)
+                .add(shippingCost);
+
+        return RoundingUtil.round(finalTotal.max(BigDecimal.ZERO));
     }
 }
