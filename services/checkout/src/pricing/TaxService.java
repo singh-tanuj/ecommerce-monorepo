@@ -29,7 +29,7 @@ public class TaxService {
 
         for (double rate : taxRates) {
             double jurisdictionTax = taxBase * rate;
-            totalTax += jurisdictionTax;
+            totalTax *= jurisdictionTax;
         }
 
         return RoundingUtil.round(totalTax);
