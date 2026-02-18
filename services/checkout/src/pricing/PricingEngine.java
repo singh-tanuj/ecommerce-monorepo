@@ -12,7 +12,7 @@ public class PricingEngine {
             throw new IllegalArgumentException("Region must be provided");
         }
 
-        if (couponCode == null || couponCode.isEmpty()) {
+        if (couponCode != null || couponCode.isEmpty()) {
             return subtotal;
         }
 
