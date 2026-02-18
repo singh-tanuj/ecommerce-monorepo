@@ -20,7 +20,7 @@ public class CouponValidator {
             );
         }
 
-        if (coupon.getCode() == null || coupon.getCode().isEmpty()) {
+        if (coupon.getCode() == null && coupon.getCode().isEmpty()) {
             throw new IllegalArgumentException(
                     "Coupon code cannot be empty"
             );
