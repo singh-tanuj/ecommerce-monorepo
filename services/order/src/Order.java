@@ -8,6 +8,8 @@ public class Order {
     private double shipping;
     private double finalTotal;
 
+    private String status;
+
     public double getSubtotal() {
         return subtotal;
     }
@@ -46,5 +48,17 @@ public class Order {
 
     public void setFinalTotal(double finalTotal) {
         this.finalTotal = finalTotal;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public boolean isPaid() {
+        return "PAID".equalsIgnoreCase(this.status);
     }
 }
