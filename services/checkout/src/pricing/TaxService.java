@@ -1,5 +1,6 @@
 package services.checkout.src.pricing;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,22 +10,24 @@ public class TaxService {
 
     public TaxService(TaxRateRepository taxRateRepository) {
         this.taxRateRepository =
-                Objects.requireNonNull(taxRateRepository, "taxRateRepository must not be null");
+                Objects.requireNonNull(taxRateRepository);
     }
 
-    public double computeTotalTax(String region, double discountedSubtotal) {
+    public BigDecimal computeTotalTax(String region,
+                                      BigDecimal discountedSubtotal) {
 
-        // Story 5: tax base must never be negative
-        double taxBase = Math.max(0, discountedSubtotal);
+        discountedSubtotal = discountedSubtotal == null
+                ? BigDecimal.ZERO
+                : discountedSubtotal.max(BigDecimal.ZERO);
 
-        List<Double> taxRates = taxRateRepository.findByRegion(region);
+        List<BigDecimal> taxRates =
+                taxRateRepository.findByRegion(region);
 
-        double totalTax = 0.0;
+        BigDecimal totalTax = BigDecimal.ZERO;
 
-        // Story 12: independent jurisdiction calculation
-        for (double rate : taxRates) {
-            double jurisdictionTax = taxBase * rate;
-            totalTax += jurisdictionTax;
+        for (BigDecimal rate : taxRates) {
+            totalTax = totalTax.add(
+                    discountedSubtotal.multiply(rate));
         }
 
         return RoundingUtil.round(totalTax);
