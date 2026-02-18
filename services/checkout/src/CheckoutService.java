@@ -3,6 +3,8 @@ package services.checkout.src;
 import services.pricing.src.PricingEngine;
 import services.payment.src.PaymentService;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class CheckoutService {
@@ -10,24 +12,19 @@ public class CheckoutService {
     private final PricingEngine pricingEngine;
     private final PaymentService paymentService;
     private final ShippingService shippingService;
-    private final TaxService taxService;
 
     public CheckoutService(PricingEngine pricingEngine,
                            PaymentService paymentService,
-                           ShippingService shippingService,
-                           TaxService taxService) {
+                           ShippingService shippingService) {
 
         this.pricingEngine =
-                Objects.requireNonNull(pricingEngine, "pricingEngine must not be null");
+                Objects.requireNonNull(pricingEngine);
 
         this.paymentService =
-                Objects.requireNonNull(paymentService, "paymentService must not be null");
+                Objects.requireNonNull(paymentService);
 
         this.shippingService =
-                Objects.requireNonNull(shippingService, "shippingService must not be null");
-
-        this.taxService =
-                Objects.requireNonNull(taxService, "taxService must not be null");
+                Objects.requireNonNull(shippingService);
     }
 
     public CheckoutReceipt checkout(String region,
@@ -39,29 +36,46 @@ public class CheckoutService {
         double discountedSubtotal =
                 pricingEngine.applyDiscount(region, subtotal, coupon);
 
-        // 2️⃣ Compute tax on discounted subtotal (Story 5 + 12)
-        TaxBreakdown taxBreakdown =
-                taxService.computeTax(region, discountedSubtotal);
+        // 2️⃣ Multi-jurisdiction tax (Story 12)
+        List<Double> taxRates = getTaxRates(region);
+
+        double totalTax =
+                pricingEngine.computeTotalTax(region,
+                        discountedSubtotal,
+                        taxRates);
 
         double totalWithTax =
-                discountedSubtotal + taxBreakdown.getTotalTax();
+                discountedSubtotal + totalTax;
 
-        // 3️⃣ Shipping computed after discount (Story 10 alignment)
+        // 3️⃣ Shipping AFTER discount (corrected)
         double shippingCost =
-                shippingService.calculateShipping(region, discountedSubtotal);
+                shippingService.calculateShipping(region,
+                        discountedSubtotal);
 
-        // 4️⃣ Final total
         double finalTotal =
                 totalWithTax + shippingCost;
 
-        // 5️⃣ Payment processing
+        // 4️⃣ Payment
         paymentService.processPayment(finalTotal, paymentMethod);
 
         return new CheckoutReceipt(
                 discountedSubtotal,
-                taxBreakdown,
+                totalTax,
                 shippingCost,
                 finalTotal
         );
+    }
+
+    private List<Double> getTaxRates(String region) {
+
+        if (region.equals("US-CA")) {
+            return Arrays.asList(0.06, 0.02);
+        }
+
+        if (region.equals("US-NY")) {
+            return Arrays.asList(0.04, 0.03);
+        }
+
+        return Arrays.asList(0.05);
     }
 }
