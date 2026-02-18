@@ -1,22 +1,30 @@
 package services.checkout.src.pricing;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
 public class TaxRateRepository {
 
-    public List<Double> findByRegion(String region) {
+    public List<BigDecimal> findByRegion(String region) {
 
-        switch (region) {
+        if (region == null) {
+            return Collections.singletonList(BigDecimal.valueOf(0.05));
+        }
+
+        switch (region.toUpperCase()) {
             case "US-CA":
-                return Arrays.asList(0.06, 0.02); // State + Local
+                return List.of(
+                        BigDecimal.valueOf(0.06),
+                        BigDecimal.valueOf(0.02));
             case "US-NY":
-                return Arrays.asList(0.04, 0.03); // State + City
+                return List.of(
+                        BigDecimal.valueOf(0.04),
+                        BigDecimal.valueOf(0.03));
             case "EU-DE":
-                return Collections.singletonList(0.19);
+                return List.of(BigDecimal.valueOf(0.19));
             default:
-                return Collections.singletonList(0.05);
+                return List.of(BigDecimal.valueOf(0.05));
         }
     }
 }
