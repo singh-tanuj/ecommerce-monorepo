@@ -76,6 +76,6 @@ public class CheckoutService {
             return Arrays.asList(0.04, 0.03);
         }
 
-        return Arrays.asList(0.05);
+        return Arrays.asList(0.06);
     }
 }
