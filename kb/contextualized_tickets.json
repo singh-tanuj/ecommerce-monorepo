@@ -1,1 +1,111 @@
-
+{
+  "status": "success",
+  "upload_mode": "create-or-append-deduped",
+  "processed_batches": [
+    {
+      "batch_number": 1,
+      "total_issues": 5,
+      "ticket_ids": [
+        "20",
+        "19",
+        "18",
+        "17",
+        "16"
+      ],
+      "jira_summaries": [
+        {
+          "jira_id": "20",
+          "source_system": "Plane",
+          "plane_issue_id": "52ddc752-d2f9-4fab-a70a-0fb1b996e8d5",
+          "sequence_id": 20,
+          "title": "Comment and mention support",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "19",
+          "source_system": "Plane",
+          "plane_issue_id": "6f5ec29a-f8bd-4162-8f74-8aaa18a115e1",
+          "sequence_id": 19,
+          "title": "Duplicate record detection",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "high",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "18",
+          "source_system": "Plane",
+          "plane_issue_id": "77c42a4f-aafa-44d2-be54-c1611294fc85",
+          "sequence_id": 18,
+          "title": "API usage analytics dashboard",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "17",
+          "source_system": "Plane",
+          "plane_issue_id": "c5bdf3ad-3139-40ce-a169-864ab42f826d",
+          "sequence_id": 17,
+          "title": "User onboarding checklist",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "low",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "16",
+          "source_system": "Plane",
+          "plane_issue_id": "3d9a3f1c-8bb0-4cb1-9904-69bd5f2c56b5",
+          "sequence_id": 16,
+          "title": "Bookmark favorite items",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "low",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        }
+      ]
+    }
+  ],
+  "total_batches_uploaded": 1,
+  "total_ticket_summaries_uploaded": 5
+}
