@@ -104,8 +104,111 @@
           "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
         }
       ]
+    },
+    {
+      "batch_number": 2,
+      "total_issues": 5,
+      "ticket_ids": [
+        "15",
+        "14",
+        "13",
+        "12",
+        "11"
+      ],
+      "jira_summaries": [
+        {
+          "jira_id": "15",
+          "source_system": "Plane",
+          "plane_issue_id": "bd8bb9d9-712e-413c-aac2-b03c9c886cfc",
+          "sequence_id": 15,
+          "title": "Advanced filtering support",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "14",
+          "source_system": "Plane",
+          "plane_issue_id": "54b4d385-9d4f-43e5-919d-b5be1579379b",
+          "sequence_id": 14,
+          "title": "Bulk user import support",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "13",
+          "source_system": "Plane",
+          "plane_issue_id": "6e08ea65-31be-41d0-8fb9-b86e6191e68e",
+          "sequence_id": 13,
+          "title": "Application audit log generation",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "high",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "12",
+          "source_system": "Plane",
+          "plane_issue_id": "e60e539a-5af4-4df8-93aa-faba6ec8f149",
+          "sequence_id": 12,
+          "title": "Export report to CSV",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "11",
+          "source_system": "Plane",
+          "plane_issue_id": "5c7268a0-8d20-4e42-9108-a7788e3a9b88",
+          "sequence_id": 11,
+          "title": "Role based access control enhancement",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "high",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        }
+      ]
     }
   ],
-  "total_batches_uploaded": 1,
-  "total_ticket_summaries_uploaded": 5
+  "total_batches_uploaded": 2,
+  "total_ticket_summaries_uploaded": 10
 }
