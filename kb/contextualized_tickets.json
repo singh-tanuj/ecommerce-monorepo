@@ -310,8 +310,111 @@
           "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
         }
       ]
+    },
+    {
+      "batch_number": 3,
+      "total_issues": 5,
+      "ticket_ids": [
+        "10",
+        "9",
+        "8",
+        "7",
+        "6"
+      ],
+      "jira_summaries": [
+        {
+          "jira_id": "10",
+          "source_system": "Plane",
+          "plane_issue_id": "e91668fa-2dac-4adb-b216-0f759d1cfa99",
+          "sequence_id": 10,
+          "title": "Multi-language selection support",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "9",
+          "source_system": "Plane",
+          "plane_issue_id": "248c5af3-3975-4aaa-b979-e4b6a4298824",
+          "sequence_id": 9,
+          "title": "Session timeout notification",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "8",
+          "source_system": "Plane",
+          "plane_issue_id": "aa4000ad-5afb-4af3-83fe-28cc92cab3c3",
+          "sequence_id": 8,
+          "title": "Account activity history page",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "7",
+          "source_system": "Plane",
+          "plane_issue_id": "ce19e19a-8aa6-479a-bcbf-5c9deedf5aec",
+          "sequence_id": 7,
+          "title": "Dark mode support",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "low",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        },
+        {
+          "jira_id": "6",
+          "source_system": "Plane",
+          "plane_issue_id": "0630b45b-5018-4f4f-9124-700764656311",
+          "sequence_id": 6,
+          "title": "Document download functionality",
+          "issue_type": "Issue",
+          "status": "Not Available",
+          "priority": "medium",
+          "assignee": "Unassigned",
+          "reporter": "Not Available",
+          "business_objective": "Not Available",
+          "key_requirements": [],
+          "major_implementation_details": [],
+          "acceptance_criteria": "Not Available",
+          "important_comments_or_updates": [],
+          "contextualized_summary": "Insufficient Plane ticket information available to create a contextualized summary."
+        }
+      ]
     }
   ],
-  "total_batches_uploaded": 3,
-  "total_ticket_summaries_uploaded": 15
+  "total_batches_uploaded": 4,
+  "total_ticket_summaries_uploaded": 20
 }
