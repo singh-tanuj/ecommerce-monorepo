@@ -26,7 +26,7 @@ public class OrderService {
         requireNonBlank(userId, "userId must not be blank");
         if (totalCents <= 0) throw new IllegalArgumentException("totalCents must be >= 0");
 
-        String orderId = "ord_" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+        String orderId = "ord_" + UUID.randomUUID().toString().replace("-", "").substring(0, Math.min(12, 32));
 
         Order o = new Order(orderId, cartId, userId, totalCents, stateMachine.initial());
         // Common approach: once created, mark as PAYMENT_PENDING
